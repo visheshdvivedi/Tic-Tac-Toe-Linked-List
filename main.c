@@ -28,7 +28,7 @@ void printWelcomeMessage()
     printf("\n");
     printf("--------------------\n");
     printf("|    CREATORS:     |\n");
-    printf("|    Arifa Arif    |");
+    printf("|    Arifa Arif    |\n");
     printf("|   Apoorv Gupta   |\n");
     printf("|  Vishesh Dvivedi |\n");
     printf("--------------------\n");
