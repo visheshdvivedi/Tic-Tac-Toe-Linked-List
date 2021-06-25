@@ -191,6 +191,7 @@ void display()
                 }
             }
         }
+        printf("\n");
     }
 }
 
@@ -207,7 +208,7 @@ void printData()
 void main()
 {
     int counter = 0, position=0, num=0;
-    char character;
+    char character, choice[100];
     createBoard();
     while (counter < 9)
     {
@@ -223,22 +224,31 @@ void main()
         }
         
         printf("Player %d, enter your choice: ", num+1);
-        scanf("%d", &position);
-        if (checkPosition(position))
+        gets(choice);
+        position = atoi(choice);
+        if ((position >= 1) && (position <= 9))
         {
-            insertCharacterAtPosition(position, character);
-            if(checkWin())
+            if (checkPosition(position))
             {
-                display();
-                printf("Conguratulations !!! Player %d won !!!", num+1);
-                break;
+                insertCharacterAtPosition(position, character);
+                if(checkWin())
+                {
+                    display();
+                    printf("Conguratulations !!! Player %d won !!!", num+1);
+                    break;
+                }
             }
+            else
+            {
+                continue;
+            }
+            counter++;
         }
         else
         {
-            continue;
+            printf("[ERROR] Invalid input...Please enter a number between 1 and 9\n");
+            sleep(WAIT);
         }
-        counter++;
     }
     if(counter == 9)
     {
