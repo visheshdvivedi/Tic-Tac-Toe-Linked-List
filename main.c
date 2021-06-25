@@ -28,7 +28,6 @@ void printWelcomeMessage()
     printf("\n");
     printf("--------------------\n");
     printf("|    CREATORS:     |\n");
-    printf("|    Arifa Arif    |\n");
     printf("|   Apoorv Gupta   |\n");
     printf("|  Vishesh Dvivedi |\n");
     printf("--------------------\n");
@@ -137,11 +136,11 @@ int checkWin()
     }
     
     // Checking for diagonal victory
-    if ((charList[0] == charList[4]) && (charList[4] == charList[9]))
+    if ((charList[0] == charList[4]) && (charList[4] == charList[8]))
     {
         return 1;
     }
-    else if ((charList[2] == charList[4]) && (charList[4] == charList[7]))
+    else if ((charList[2] == charList[4]) && (charList[4] == charList[6]))
     {
         return 1;
     }
