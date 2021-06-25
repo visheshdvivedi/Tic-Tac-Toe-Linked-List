@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #define X 'X'
 #define O 'O'
-#define WAIT 3
+#define WAIT 4
 
 struct node
 {
@@ -12,6 +12,29 @@ struct node
 }*start = NULL;
 
 struct node *new_node = NULL, *current_node = NULL;
+
+
+void printWelcomeMessage()
+{
+    system("clear");
+    printf("'########:'####::'######:::::'########::::'###:::::'######:::::'########::'#######::'########:\n");
+    printf("... ##..::. ##::'##... ##::::... ##..::::'## ##:::'##... ##::::... ##..::'##.... ##: ##.....::\n");
+    printf("::: ##::::: ##:: ##:::..:::::::: ##:::::'##:. ##:: ##:::..:::::::: ##:::: ##:::: ##: ##:::::::\n");
+    printf("::: ##::::: ##:: ##::::::::::::: ##::::'##:::. ##: ##::::::::::::: ##:::: ##:::: ##: ######:::\n");
+    printf("::: ##::::: ##:: ##::::::::::::: ##:::: #########: ##::::::::::::: ##:::: ##:::: ##: ##...::::\n");
+    printf("::: ##::::: ##:: ##::: ##::::::: ##:::: ##.... ##: ##::: ##::::::: ##:::: ##:::: ##: ##:::::::\n");
+    printf("::: ##::::'####:. ######:::::::: ##:::: ##:::: ##:. ######:::::::: ##::::. #######:: ########:\n");
+    printf(":::..:::::....:::......:::::::::..:::::..:::::..:::......:::::::::..::::::.......:::........::\n");
+    printf("\n");
+    printf("--------------------\n");
+    printf("|    CREATORS:     |\n");
+    printf("|   Apoorv Gupta   |\n");
+    printf("|  Vishesh Dvivedi |\n");
+    printf("--------------------\n");
+    printf("\n");
+    
+}
+
 
 void insertNode(int position, char character)
 {
@@ -62,7 +85,7 @@ int checkPosition(int position)
         {
             if ((current_node->character==X) || (current_node->character==O))
             {
-                printf("[ERROR] Position %d is already occupied. Please choose another position.", position);
+                printf("[ERROR] Position %d is already occupied. Please choose another position.\n\n", position);
                 sleep(WAIT);
                 return 0;
             }
@@ -86,6 +109,43 @@ void insertCharacterAtPosition(int position, char character)
         }
         current_node = current_node->next;
     }
+}
+
+int checkWin()
+{
+    struct node *current_node = start;
+    char charList[9] = {'0', '0', '0', '0', '0', '0', '0', '0', '0'};
+    
+    for(int i=0; i<9; i++)
+    {
+        charList[i] = current_node->character;
+        current_node = current_node->next;
+    }
+    
+    // Checking for horizontal win
+    for(int i=0; i<3; i++)
+    {
+        if ((charList[i] == charList[i+1]) && (charList[i] == charList[i+2]))
+        {
+            return 1;
+        }
+        else if ((charList[i] == charList[i+3]) && (charList[i] == charList[i+6]))
+        {
+            return 1;
+        }
+    }
+    
+    // Checking for diagonal victory
+    if ((charList[0] == charList[4]) && (charList[4] == charList[9]))
+    {
+        return 1;
+    }
+    else if ((charList[2] == charList[4]) && (charList[4] == charList[7]))
+    {
+        return 1;
+    }
+    
+    return 0;
 }
 
 void display()
@@ -144,27 +204,6 @@ void printData()
     }
 }
 
-void printWelcomeMessage()
-{
-    system("clear");
-    printf("'########:'####::'######:::::'########::::'###:::::'######:::::'########::'#######::'########:\n");
-    printf("... ##..::. ##::'##... ##::::... ##..::::'## ##:::'##... ##::::... ##..::'##.... ##: ##.....::\n");
-    printf("::: ##::::: ##:: ##:::..:::::::: ##:::::'##:. ##:: ##:::..:::::::: ##:::: ##:::: ##: ##:::::::\n");
-    printf("::: ##::::: ##:: ##::::::::::::: ##::::'##:::. ##: ##::::::::::::: ##:::: ##:::: ##: ######:::\n");
-    printf("::: ##::::: ##:: ##::::::::::::: ##:::: #########: ##::::::::::::: ##:::: ##:::: ##: ##...::::\n");
-    printf("::: ##::::: ##:: ##::: ##::::::: ##:::: ##.... ##: ##::: ##::::::: ##:::: ##:::: ##: ##:::::::\n");
-    printf("::: ##::::'####:. ######:::::::: ##:::: ##:::: ##:. ######:::::::: ##::::. #######:: ########:\n");
-    printf(":::..:::::....:::......:::::::::..:::::..:::::..:::......:::::::::..::::::.......:::........::\n");
-    printf("\n");
-    printf("--------------------\n");
-    printf("|    CREATORS:     |\n");
-    printf("|   Apoorv Gupta   |\n");
-    printf("|  Vishesh Dvivedi |\n");
-    printf("--------------------\n");
-    printf("\n");
-    
-}
-
 void main()
 {
     int counter = 0, position=0, num=0;
@@ -183,11 +222,17 @@ void main()
             character = O;
         }
         
-        printf("Player %d, enter your choice: ", num);
+        printf("Player %d, enter your choice: ", num+1);
         scanf("%d", &position);
         if (checkPosition(position))
         {
             insertCharacterAtPosition(position, character);
+            if(checkWin())
+            {
+                display();
+                printf("Conguratulations !!! Player %d won !!!", num+1);
+                break;
+            }
         }
         else
         {
@@ -195,5 +240,9 @@ void main()
         }
         counter++;
     }
+    if(counter == 9)
+    {
+        display();
+        printf("The match ended with a DRAW !!! Better Luck Next Time !!!");
+    }
 }
-
