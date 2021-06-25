@@ -1,18 +1,29 @@
+/*******************************************************************
+START OF PROJECT
+********************************************************************/
+
+// Including header files
 #include <stdio.h>
 #include <stdlib.h>
+
+// Defining preprocessor directives
 #define X 'X'
-#define O 'O'
+#define O '0'
 #define WAIT 4
 
+/*
+Creating node structure which stores the following values:
+int position:      which stores the position of the character within the board.
+char character:    which stores the character placed within the block inside the board.
+struct node *next: pointer that stores the address of the next node.
+*/
 struct node
 {
     int position;
     char character;
     struct node *next;
+    
 }*start = NULL;
-
-struct node *new_node = NULL, *current_node = NULL;
-
 
 void printWelcomeMessage()
 {
@@ -28,6 +39,7 @@ void printWelcomeMessage()
     printf("\n");
     printf("--------------------\n");
     printf("|    CREATORS:     |\n");
+    printf("|    Arifa Arif    |\n");
     printf("|   Apoorv Gupta   |\n");
     printf("|  Vishesh Dvivedi |\n");
     printf("--------------------\n");
@@ -35,9 +47,11 @@ void printWelcomeMessage()
     
 }
 
+struct node *current_node = NULL;
 
 void insertNode(int position, char character)
 {
+    struct node *new_node = NULL;
     new_node = (struct node*)malloc(sizeof(struct node));
     
     if(new_node == NULL)
@@ -85,7 +99,7 @@ int checkPosition(int position)
         {
             if ((current_node->character==X) || (current_node->character==O))
             {
-                printf("[ERROR] Position %d is already occupied. Please choose another position.\n\n", position);
+                printf("\n[ERROR] Position %d is already occupied. Please choose another position.\n\n", position);
                 sleep(WAIT);
                 return 0;
             }
@@ -114,7 +128,7 @@ void insertCharacterAtPosition(int position, char character)
 int checkWin()
 {
     struct node *current_node = start;
-    char charList[9] = {'0', '0', '0', '0', '0', '0', '0', '0', '0'};
+    char charList[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
     
     for(int i=0; i<9; i++)
     {
@@ -122,14 +136,19 @@ int checkWin()
         current_node = current_node->next;
     }
     
-    // Checking for horizontal win
-    for(int i=0; i<3; i++)
+    // Checking for horizontal victory
+    for(int i=0; i<9; i+=3)
     {
         if ((charList[i] == charList[i+1]) && (charList[i] == charList[i+2]))
         {
             return 1;
         }
-        else if ((charList[i] == charList[i+3]) && (charList[i] == charList[i+6]))
+    }
+    
+    // Checking for vertical victory
+    for(int i=0; i<3; i++)
+    {
+        if ((charList[i] == charList[i+3]) && (charList[i+3] == charList[i+6]))
         {
             return 1;
         }
@@ -191,7 +210,6 @@ void display()
                 }
             }
         }
-        printf("\n");
     }
 }
 
@@ -223,7 +241,7 @@ void main()
             character = O;
         }
         
-        printf("Player %d, enter your choice: ", num+1);
+        printf("\nPlayer %d, enter your choice: ", num+1);
         gets(choice);
         position = atoi(choice);
         if ((position >= 1) && (position <= 9))
@@ -234,7 +252,7 @@ void main()
                 if(checkWin())
                 {
                     display();
-                    printf("Conguratulations !!! Player %d won !!!", num+1);
+                    printf("\nConguratulations !!! Player %d won !!!", num+1);
                     break;
                 }
             }
@@ -246,13 +264,13 @@ void main()
         }
         else
         {
-            printf("[ERROR] Invalid input...Please enter a number between 1 and 9\n");
+            printf("\n[ERROR] Invalid input...Please enter a number between 1 and 9\n");
             sleep(WAIT);
         }
     }
     if(counter == 9)
     {
         display();
-        printf("The match ended with a DRAW !!! Better Luck Next Time !!!");
+        printf("\nThe match ended with a DRAW !!! Better Luck Next Time !!!");
     }
 }
